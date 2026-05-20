@@ -116,6 +116,35 @@ See [`requirements.txt`](requirements.txt) for the full list. Key dependencies:
 
 ---
 
+# Escalate Router
+
+Learned compute arbitration router for AI coding agents.
+
+## What it does
+Predicts the number of LLM calls required to solve a coding task,
+enabling threshold-based routing decisions that reduce frontier model invocations.
+
+## Results
+- CV MAE: 15.8 ± 0.6 calls (on 26–100 call range)
+- Held-out accuracy: 99% (91/92 instances)
+- Length-only baseline: 50% — router learns real complexity signal
+
+## Architecture
+- Backbone: Gemma 8B (4-bit, frozen) for task embeddings
+- Head: Ridge regression (2560-dim → call count prediction)
+- Threshold: 49 calls (33rd percentile of training distribution)
+
+## HuggingFace Models
+- SFT: vedevpatel/escalate-router-sft-v1
+- IPO: vedevpatel/escalate-router-ipo-v2
+- Regression: vedevpatel/escalate-router-regression-v1
+
+## Training Data
+929 SWE-bench trajectories with LLM call counts from OpenHands agent runs.
+DPO pairs labeled by relative efficiency (chosen_llm_calls vs rejected_llm_calls).
+
+
+
 ## License
 
 MIT
